@@ -1,0 +1,88 @@
+﻿@model List<RunModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section IndexStyles {
+    <style>
+        #runs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            width: 100%;
+            gap: 1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .run {
+            position: relative;
+            max-width: 500px;
+            padding: 2rem;
+            outline: 2px solid #333333;
+            border-radius: 2px;
+        }
+
+        .date {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .route, .distance, .pace {
+            font-size: 2rem;
+        }
+
+        .route {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .distance {
+            margin-top: 1.5rem;
+        }
+
+        .route::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 1px;
+            background-color: #333333;
+        }
+
+        .notes {
+            display: none;
+        }
+    </style>
+}
+
+@if (Model.Count != 0)
+{
+    <div id="runs-container">
+
+        @foreach (var run in Model)
+        {
+            DateOnly date = DateOnly.FromDateTime(run.Date);
+
+            <div class="run clickable">
+                <div class="front">
+                    <div class="date">@date.ToString()</div>
+                    <div class="route">@run.Route</div>
+                    <div class="distance">@run.Distance miles</div>
+                    <div class="pace">@run.PaceMinutes:@run.PaceSeconds per mile</div>
+                </div>
+                <div class="back">
+                    <div class="notes">@run.Notes</div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+
+
+
+
+
