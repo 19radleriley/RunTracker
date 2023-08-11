@@ -19,49 +19,6 @@ public class HomeController : Controller
 
     public IActionResult Index(RunModel run)
     {
-        //if (runs == null)
-        //{
-        //    runs = new List<RunModel>()
-        //    {
-        //        new RunModel()
-        //        {
-        //            Route = "Silver Birch O/B",
-        //            Date = DateTime.Now,
-        //            Distance = 3,
-        //            PaceMinutes = 9,
-        //            PaceSeconds = 10,
-        //            Notes = "It was an easy run. The legs felt good, and it was golden hour. Can't ask for much better!"
-        //        },
-        //        new RunModel()
-        //        {
-        //            Route = "Silver Birch O/B",
-        //            Date = DateTime.Now,
-        //            Distance = 3,
-        //            PaceMinutes = 9,
-        //            PaceSeconds = 10,
-        //            Notes = "It was an easy run. The legs felt good, and it was golden hour. Can't ask for much better!"
-        //        },
-        //        new RunModel()
-        //        {
-        //            Route = "Silver Birch O/B",
-        //            Date = DateTime.Now,
-        //            Distance = 3,
-        //            PaceMinutes = 9,
-        //            PaceSeconds = 10,
-        //            Notes = "It was an easy run. The legs felt good, and it was golden hour. Can't ask for much better!"
-        //        },
-        //        new RunModel()
-        //        {
-        //            Route = "Silver Birch O/B",
-        //            Date = DateTime.Now,
-        //            Distance = 3,
-        //            PaceMinutes = 9,
-        //            PaceSeconds = 10,
-        //            Notes = "It was an easy run. The legs felt good, and it was golden hour. Can't ask for much better!"
-        //        }
-        //    };
-        //}
-
         // Get all runs and order them by date.
         var runs = _runsDbContext.Runs
                                  .OrderBy(r => r.Date)
@@ -85,6 +42,62 @@ public class HomeController : Controller
 
         _runsDbContext.Add(run);
         _runsDbContext.SaveChanges();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult UpdateRun(int id)
+    {
+        var toUpdate = _runsDbContext.Find<RunModel>(id);
+
+        if (toUpdate == null)
+        {
+            return NotFound();
+        }
+
+        return View(toUpdate);
+    }
+
+    public IActionResult RunUpdated(RunModel updatedRun)
+    {
+        if (ModelState.IsValid)
+        {
+            var toUpdate = _runsDbContext.Find<RunModel>(updatedRun.Run_Id);
+
+            if (toUpdate == null)
+            {
+                return NotFound();
+            }
+
+            toUpdate.Route = updatedRun.Route;
+            toUpdate.Date = updatedRun.Date;
+            toUpdate.Distance = updatedRun.Distance;
+            toUpdate.PaceMinutes = updatedRun.PaceMinutes;
+            toUpdate.PaceSeconds = updatedRun.PaceSeconds;
+            toUpdate.Notes = updatedRun.Notes;
+
+            _runsDbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        return View("UpdateRun", updatedRun);
+    }
+
+    public IActionResult DeleteRun(int id)
+    {
+        var toDelete = _runsDbContext.Find<RunModel>(id);
+
+        if (toDelete != null)
+        {
+            _runsDbContext.Remove(toDelete);
+            _runsDbContext.SaveChanges();
+            //_runsDbContext.SaveChangesAsync();
+        }
+        else
+        {
+            return NotFound();
+        }
 
         return RedirectToAction(nameof(Index));
     }

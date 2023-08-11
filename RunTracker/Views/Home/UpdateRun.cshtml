@@ -1,0 +1,48 @@
+﻿@model RunTracker.Models.RunModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@*@using (Html.BeginForm("Update", "Items", FormMethod.Post))
+    {
+        @Html.LabelFor(model => model.Route)
+        @Html.EditorFor(model => model.Route)
+        @Html.LabelFor(model => model.Date)
+        @Html.EditorFor(model => model.Date)
+        @Html.LabelFor(model => model.Distance)
+        @Html.EditorFor(model => model.Distance)
+        @Html.LabelFor(model => model.PaceMinutes)
+        @Html.EditorFor(model => model.PaceMinutes)
+        @Html.LabelFor(model => model.PaceSeconds)
+        @Html.EditorFor(model => model.PaceSeconds)
+        @Html.LabelFor(model => model.Notes)
+        @Html.EditorFor(model => model.Notes)
+        <button type="submit">Update</button>
+    }*@
+
+@*Update me below!!!*@
+
+<form id="create-run-form" asp-controller="Home" asp-action="RunUpdated" method="post">
+
+    <label for="route">Route Name</label>
+    <input type="text" id="route" asp-for="Route" value="@Model.Route" />
+
+    <label for="date">Date</label>
+    <input type="date" id="date" asp-for="Date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+
+    <label for="distance">Distance</label>
+    <input type="number" id="distance" asp-for="Distance" step="0.01" value="@Model.Distance" />
+
+    <label for="pace-minutes">Pace (Minutes)</label>
+    <input type="number" id="pace-minutes" asp-for="PaceMinutes" value="@Model.PaceMinutes" />
+
+    <label for="pace-seconds">Pace (Seconds)</label>
+    <input type="number" id="pace-seconds" asp-for="PaceSeconds" value="@Model.PaceSeconds" />
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" asp-for="Notes">@Model.Notes</textarea>
+
+    <input type="submit"/>
+</form> 

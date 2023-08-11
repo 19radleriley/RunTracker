@@ -71,11 +71,13 @@
                     <div class="date">@date.ToString()</div>
                     <div class="route">@run.Route</div>
                     <div class="distance">@run.Distance miles</div>
-                    <div class="pace">@run.PaceMinutes:@run.PaceSeconds per mile</div>
+                    <div class="pace">@run.PaceMinutes:@run.PaceSeconds.ToString("D2") per mile</div>
                 </div>
                 <div class="back">
                     <div class="notes">@run.Notes</div>
                 </div>
+                <a href="@Url.Action("DeleteRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-trash"></i></a>
+                <a href="@Url.Action("UpdateRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-pen"></i></a>
             </div>
         }
     </div>
