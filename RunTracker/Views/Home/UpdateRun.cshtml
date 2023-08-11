@@ -5,26 +5,11 @@
 @{
 }
 
-@*@using (Html.BeginForm("Update", "Items", FormMethod.Post))
-    {
-        @Html.LabelFor(model => model.Route)
-        @Html.EditorFor(model => model.Route)
-        @Html.LabelFor(model => model.Date)
-        @Html.EditorFor(model => model.Date)
-        @Html.LabelFor(model => model.Distance)
-        @Html.EditorFor(model => model.Distance)
-        @Html.LabelFor(model => model.PaceMinutes)
-        @Html.EditorFor(model => model.PaceMinutes)
-        @Html.LabelFor(model => model.PaceSeconds)
-        @Html.EditorFor(model => model.PaceSeconds)
-        @Html.LabelFor(model => model.Notes)
-        @Html.EditorFor(model => model.Notes)
-        <button type="submit">Update</button>
-    }*@
-
 @*Update me below!!!*@
 
 <form id="create-run-form" asp-controller="Home" asp-action="RunUpdated" method="post">
+
+    <input type="hidden" asp-for="Run_Id" value="@Model.Run_Id"/>
 
     <label for="route">Route Name</label>
     <input type="text" id="route" asp-for="Route" value="@Model.Route" />

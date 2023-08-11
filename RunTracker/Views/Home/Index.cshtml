@@ -17,16 +17,46 @@
 
         .run {
             position: relative;
-            max-width: 500px;
-            padding: 2rem;
-            outline: 2px solid #333333;
+            max-width: 400px;
+            height: 500px;
             border-radius: 2px;
+
+            perspective: 2500px;
+        }
+
+        .flip-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform .8s;
+            transform-style: preserve-3d;
+            background-color: #f0f0f0;
+            /* outline: 2px solid #333333; */
+        }
+
+        .run .flip-container.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .run .front, .run .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2rem;
+            height: 100%;
+            width: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        .run .back {
+            transform: rotateY(180deg);
         }
 
         .date {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 2rem;
+            right: 2rem;
         }
 
         .route, .distance, .pace {
@@ -53,9 +83,25 @@
         }
 
         .notes {
-            display: none;
+            /* display: none; */
         }
+
     </style>
+}
+
+@section IndexScripts {
+    <script>
+        $(() => {
+            $(".run").each(function(i, obj) {
+                $(obj).on("click", () => {
+                    var flip = obj.querySelector(".flip-container");
+                    flip.classList.toggle("flipped");
+                    // console.dir(flip);
+                    // obj.classlist.toggle("")
+                });
+            });
+        });
+    </script>
 }
 
 @if (Model.Count != 0)
@@ -67,17 +113,19 @@
             DateOnly date = DateOnly.FromDateTime(run.Date);
 
             <div class="run clickable">
-                <div class="front">
-                    <div class="date">@date.ToString()</div>
-                    <div class="route">@run.Route</div>
-                    <div class="distance">@run.Distance miles</div>
-                    <div class="pace">@run.PaceMinutes:@run.PaceSeconds.ToString("D2") per mile</div>
+                <div class="flip-container">
+                    <div class="front">
+                        <div class="date">@date.ToString()</div>
+                        <div class="route">@run.Route</div>
+                        <div class="distance">@run.Distance miles</div>
+                        <div class="pace">@run.PaceMinutes:@run.PaceSeconds.ToString("D2") per mile</div>
+                        <a href="@Url.Action("DeleteRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-trash"></i></a>
+                        <a href="@Url.Action("UpdateRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-pen"></i></a>
+                    </div>
+                    <div class="back">
+                        <div class="notes">@run.Notes</div>
+                    </div>
                 </div>
-                <div class="back">
-                    <div class="notes">@run.Notes</div>
-                </div>
-                <a href="@Url.Action("DeleteRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-trash"></i></a>
-                <a href="@Url.Action("UpdateRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-pen"></i></a>
             </div>
         }
     </div>

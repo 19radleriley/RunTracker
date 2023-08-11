@@ -8,7 +8,6 @@ namespace RunTracker.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    //private static List<RunModel>? runs;
     private readonly RunsDbContext _runsDbContext;
 
     public HomeController(ILogger<HomeController> logger, RunsDbContext runsDbContext)
@@ -35,11 +34,6 @@ public class HomeController : Controller
 
     public IActionResult RunCreated(RunModel run)
     {
-        //if (runs != null)
-        //{
-        //    runs.Add(run);
-        //}
-
         _runsDbContext.Add(run);
         _runsDbContext.SaveChanges();
 
