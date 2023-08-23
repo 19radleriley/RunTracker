@@ -26,12 +26,14 @@ public class HomeController : Controller
         return View(runs);
     }
 
+    [HttpGet]
     public IActionResult CreateRun()
     {
         RunModel run = new RunModel();
         return View(run);
     }
 
+    [HttpPost]
     public IActionResult RunCreated(RunModel run)
     {
         _runsDbContext.Add(run);
@@ -40,6 +42,7 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
     public IActionResult UpdateRun(int id)
     {
         var toUpdate = _runsDbContext.Find<RunModel>(id);
@@ -52,6 +55,7 @@ public class HomeController : Controller
         return View(toUpdate);
     }
 
+    [HttpPost]
     public IActionResult RunUpdated(RunModel updatedRun)
     {
         if (ModelState.IsValid)
@@ -78,6 +82,7 @@ public class HomeController : Controller
         return View("UpdateRun", updatedRun);
     }
 
+    [HttpPost]
     public IActionResult DeleteRun(int id)
     {
         var toDelete = _runsDbContext.Find<RunModel>(id);

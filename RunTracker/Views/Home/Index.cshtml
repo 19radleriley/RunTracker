@@ -20,7 +20,6 @@
             max-width: 400px;
             height: 500px;
             border-radius: 2px;
-
             perspective: 2500px;
         }
 
@@ -85,27 +84,64 @@
         .notes {
             /* display: none; */
         }
-
     </style>
 }
 
 @section IndexScripts {
     <script>
         $(() => {
-            $(".run").each(function(i, obj) {
-                $(obj).on("click", () => {
-                    var flip = obj.querySelector(".flip-container");
-                    flip.classList.toggle("flipped");
-                    // console.dir(flip);
-                    // obj.classlist.toggle("")
+            // Hide the delete confirmation initially
+            $("#confirm-delete-container").hide();
+
+            $(".run").each(function (i, obj) {
+                $(obj).on("click", function (event) {
+                    console.dir(event.target);
+                    if (!$(event.target).hasClass("icon")) {
+                        var flip = obj.querySelector(".flip-container");
+                        flip.classList.toggle("flipped");
+                    }
                 });
             });
         });
+
+        function confirmDelete(runId) {
+            $("#confirm-delete").off();
+            $("#cancel-delete").off();
+
+            var popup = $("#confirm-delete-container");
+            popup.fadeToggle();
+
+            $("#confirm-delete").on("click", () => {
+                var form = document.querySelector("#delete-form");
+                form.action = "/Home/DeleteRun/" + runId;
+                form.submit();
+                popup.fadeToggle();
+            });
+
+            $("#cancel-delete").on("click", () => {
+                popup.fadeToggle();
+            });
+        }
     </script>
 }
 
 @if (Model.Count != 0)
 {
+    <div id="confirm-delete-container"> 
+        @* Filled and submitted with javascript to delete a run with a confirmation *@
+        <form id="delete-form" asp-action="DeleteRun" asp-controller="Home" method="post">
+            <input type="hidden"/>
+        </form>
+
+        <div id="confirm-delete-content">
+            <b id="confirm-text">Are you sure you want to delete this run?</b>
+            <div id="confirm-delete-btn-container">
+                <button class="clickable" id="confirm-delete">Yes</button>
+                <button class="clickable" id="cancel-delete">No</button>
+            </div>
+        </div>
+    </div>
+
     <div id="runs-container">
 
         @foreach (var run in Model)
@@ -119,8 +155,9 @@
                         <div class="route">@run.Route</div>
                         <div class="distance">@run.Distance miles</div>
                         <div class="pace">@run.PaceMinutes:@run.PaceSeconds.ToString("D2") per mile</div>
-                        <a href="@Url.Action("DeleteRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-trash"></i></a>
-                        <a href="@Url.Action("UpdateRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-pen"></i></a>
+                        @*<a href="@Url.Action("DeleteRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-trash"></i></a>*@
+                        <i class="fa-solid fa-trash icon" onclick="confirmDelete(@run.Run_Id)"></i>
+                        <a href="@Url.Action("UpdateRun", "Home", new { id = run.Run_Id })"><i class="fa-solid fa-pen icon"></i></a>
                     </div>
                     <div class="back">
                         <div class="notes">@run.Notes</div>
@@ -129,7 +166,6 @@
             </div>
         }
     </div>
-
 }
 
 

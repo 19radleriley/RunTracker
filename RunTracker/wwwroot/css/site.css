@@ -44,3 +44,37 @@ main {
     margin-top: 1rem;
 }
 
+/* Move Me After */
+
+#confirm-delete-container {
+    position: fixed;
+    inset: 0 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 50%);
+}
+
+#confirm-delete-content {
+    padding: 1.5rem;
+    background-color: #f0f0f0;
+}
+
+#confirm-delete-btn-container {
+    display: flex;
+    gap: 1rem;
+}
+
+#confirm-text {
+    display: block;
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
+    max-width: 20ch;
+    line-height: 125%;
+}
+
+#confirm-delete, #cancel-delete {
+    padding: 1rem;
+    width: 100%;
+}
